@@ -44,7 +44,7 @@ function Menu() {
 				</header>
 				{error && <ErrorMessage message={error} />}
 				{isLoading && <Loader />}
-				{!isLoading && <ProductList products={products} />}
+				{(!isLoading && !error) && <ProductList products={products} />}
 			</div>
 		</section>
 	);

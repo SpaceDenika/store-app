@@ -1,0 +1,14 @@
+.error-message {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  align-items: center;
+}
+
+.error-message__span {
+  font-weight: 600;
+}
+
+.error-message__message {
+  margin: 0;
+}

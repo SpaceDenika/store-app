@@ -7,11 +7,15 @@ import Error from './pages/Error/Error';
 import Cart from './pages/Cart/Cart';
 import Catalog from './pages/Catalog/Catalog';
 import Product from './pages/Product/Product';
+import Auth from './layout/Auth/Auth';
+import Login from './pages/Login/Login';
+import Registr from './pages/Registr/Registr';
+import RequireAuth from './helpers/RequireAuth';
 
 const router = createBrowserRouter([
 	{
 		path: '/',
-		element: <Main />,
+		element: <RequireAuth><Main /></RequireAuth>,
 		children: [
 			{
 				path: '/',
@@ -24,6 +28,20 @@ const router = createBrowserRouter([
 			{
 				path: '/product/:id',
 				element: <Product />
+			}
+		]
+	},
+	{
+		path: '/auth',
+		element: <Auth />,
+		children: [
+			{
+				path: 'login',
+				element: <Login />
+			},
+			{
+				path: 'registr',
+				element: <Registr />
 			}
 		]
 	},

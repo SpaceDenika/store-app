@@ -41,9 +41,7 @@ function Main() {
 				</div>
 			</aside>
 			<main className={styles['main-content']}>
-				<div className={styles['main-content__container']}>
-					<Outlet />
-				</div>
+				<Outlet />
 			</main>
 		</div>
 	);

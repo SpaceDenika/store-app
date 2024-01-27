@@ -1,0 +1,24 @@
+.login {
+
+}
+
+.login__container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 30px;
+  height: 100%;
+  padding: 0 80px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.form__input-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}

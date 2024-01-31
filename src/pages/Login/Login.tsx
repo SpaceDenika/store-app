@@ -11,6 +11,7 @@ import { AppDispatch, RootState } from '../../store/store';
 import { useLoginMutation } from '../../store/user/user.api';
 import { setToken } from '../../store/user/user.slice';
 import { useNavigate } from 'react-router-dom';
+import Loader from '../../components/Loader/Loader';
 
 interface IFormState {
   email: string;
@@ -21,7 +22,7 @@ function Login() {
 
 	const dispatch = useDispatch<AppDispatch>();
 	const jwt = useSelector((state: RootState) => state.user.jwt);
-	const [login, { data }] = useLoginMutation();
+	const [login, { data, isLoading }] = useLoginMutation();
 	const navigate = useNavigate();
 
 	useEffect(() => {
@@ -55,21 +56,25 @@ function Login() {
 	return (
   	<section className={styles['login']}>
   		<div className={styles['login__container']}>
-  			<header>
-  				<Heading>Вход</Heading>
-  			</header>
-  			<form className={styles['form']} onSubmit={submitHandler}>
-  				<div className={styles['form__input-wrapper']}>
-  					<Label htmlFor='email'>Ваш email</Label>
-  					<Input id='email' type='email' placeholder='Email' name='email' onChange={changeHandler} value={formState.email} />
-  				</div>
-  				<div className={styles['form__input-wrapper']}>
-  					<Label htmlFor='password'>Ваш пароль</Label>
-  					<Input id="password" type='password' placeholder='Пароль' name='password' onChange={changeHandler} value={formState.password} />
-  				</div>
-  				<Button large>Вход</Button>
-  			</form>
-  			<Footer question='Нет акканута?' linkText='Зарегистрироваться' linkPath='/auth/register' />
+				{isLoading && <Loader />}
+  			{!isLoading && 
+        <>
+        	<header>
+        		<Heading>Вход</Heading>
+        	</header>
+        	<form className={styles['form']} onSubmit={submitHandler}>
+        		<div className={styles['form__input-wrapper']}>
+        			<Label htmlFor='email'>Ваш email</Label>
+        			<Input id='email' type='email' placeholder='Email' name='email' onChange={changeHandler} value={formState.email} />
+        		</div>
+        		<div className={styles['form__input-wrapper']}>
+        			<Label htmlFor='password'>Ваш пароль</Label>
+        			<Input id="password" type='password' placeholder='Пароль' name='password' onChange={changeHandler} value={formState.password} />
+        		</div>
+        		<Button large>Вход</Button>
+        	</form>
+        	<Footer question='Нет акканута?' linkText='Зарегистрироваться' linkPath='/auth/register' />
+        </>}
   		</div>
   	</section>
 	);

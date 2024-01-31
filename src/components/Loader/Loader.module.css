@@ -10,11 +10,33 @@
 }
 
 .loader__animation {
-  width: 300px;
-  height: 300px;
-  border: 5px dashed var(--primary-color);
+  position: relative;
+  width: 200px;
+  height: 200px;
   border-radius: 50%;
-  animation: loading 10s infinite alternate;
+  background: conic-gradient(var(--background-color), var(--primary-color));
+  animation: loading 5s infinite;
+}
+
+.loader__animation::before {
+  content: '';
+  position: absolute;
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  top: 10%;
+  left: 10%;
+  background-color: #fff;
+}
+
+.loader__animation::after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  right: 45%;
+  background-color: var(--primary-color);  
 }
 
 @keyframes loading {

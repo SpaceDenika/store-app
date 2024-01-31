@@ -8,10 +8,10 @@ import { useGetProductByIdQuery } from '../../store/products/products.api';
 function Product() {
 	const { id } = useParams();
 
-	const { data, isError, isLoading, error } = useGetProductByIdQuery(id);
+	const { data, isError, isLoading } = useGetProductByIdQuery(id);
 
 	return (<>
-		{isError && <ErrorMessage message={error} />}
+		{isError && <ErrorMessage />}
 		{isLoading && <Loader />}
 		{(!isLoading && !isError) && <article className={styles['product']}>
 			<div className={styles['product__container']}>

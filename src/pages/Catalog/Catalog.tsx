@@ -7,7 +7,7 @@ import ErrorMessage from '../../components/ErrorMessage/ErrorMessage';
 import { useGetProductsQuery } from '../../store/products/products.api';
 
 function Catalog() {
-	const { data, isLoading, isError, error} = useGetProductsQuery('');
+	const { data, isLoading, isError } = useGetProductsQuery('');
 
 	return(
 		<section className={styles['catalog']}>
@@ -16,7 +16,7 @@ function Catalog() {
 					<Heading>Каталог</Heading>
 					<SearchInput placeholder='Поиск...' />
 				</header>
-				{isError && <ErrorMessage message={error} />}
+				{isError && <ErrorMessage />}
 				{isLoading && <Loader />}
 				{(!isLoading && !isError) && <ProductList products={data} />}
 			</div>

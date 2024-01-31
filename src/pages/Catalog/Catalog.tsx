@@ -5,22 +5,22 @@ import ProductList from '../../components/ProductList/ProductList';
 import Loader from '../../components/Loader/Loader';
 import ErrorMessage from '../../components/ErrorMessage/ErrorMessage';
 import { useGetProductsQuery } from '../../store/products/products.api';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { IProduct } from '../../models/IProduct';
 
 function Catalog() {
 	const { data, isLoading, isError} = useGetProductsQuery('');
 	const [searchValue, setSearchValue] = useState<string>('');
-	const [filteredProducts, setFilteredProducts] = useState<IProduct[]>();
+	const [filteredProducts, setFilteredProducts] = useState<IProduct[] | undefined>(data);
 
-	const search = () => {
-		const filtered = data?.filter(item => item.title.toLowerCase().includes(searchValue.toLowerCase()));
+	const search = useCallback(() => {
+		const filtered = data?.filter(item => item.title.toLowerCase().startsWith(searchValue.toLowerCase()));
 		return filtered;
-	};
+	}, [data, searchValue]);
   
 	useEffect(() => {
 		setFilteredProducts(search());
-	}, [searchValue]);
+	}, [search]);
 
 	return(
 		<section className={styles['catalog']}>

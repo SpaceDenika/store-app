@@ -6,7 +6,7 @@ function Auth() {
 		<div className={styles['auth-layout']}>
 			<aside>
 				<div className={styles['logo__container']}>
-					<img className={styles['logo__image']} src="/logo.svg" alt="Логотип" />
+					<img className={styles['logo__image']} src={import.meta.env.BASE_URL + '/logo.svg'} alt="Логотип" />
 				</div>
 			</aside>
 			<Outlet />

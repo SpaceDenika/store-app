@@ -33,7 +33,7 @@ function Main() {
 			<aside className={cn(styles['sidebar'], styles['main-layout__sidebar'])}>
 				<div className={styles['sidebar__container']}>
 					<section className={styles['sidebar__user-info']}>
-						<img src='/siba.jpg' className={styles['sidebar__avatar']} alt="Аватар пользователя" />
+						<img src={import.meta.env.BASE_URL + '/siba.jpg'} className={styles['sidebar__avatar']} alt="Аватар пользователя" />
 						<div className={styles['sidebar__user-info-container']}>
 							<p className={styles['sidebar__user-name']}>{profile?.name}</p>
 							<p className={styles['sidebar__user-email']}>{profile?.email}</p>

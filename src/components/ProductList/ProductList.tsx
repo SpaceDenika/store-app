@@ -3,9 +3,10 @@ import ProductCard from '../ProductCard/ProductCard';
 import { IProductList } from './ProductList.interface';
 
 function ProductList({ products }: IProductList) {
+
 	return (
 		<ul className={styles['product-list']}>
-			{products.map(product => (
+			{products?.map(product => (
 				<li className={styles['product-list__item']} key={product.id}>
 					<ProductCard 
 						id={product.id}

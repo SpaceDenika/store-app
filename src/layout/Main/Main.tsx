@@ -1,9 +1,33 @@
 import cn from 'classnames';
-import { NavLink, Outlet } from 'react-router-dom';
+import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import styles from './Main.module.css';
 import Button from '../../components/Button/Button';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../store/store';
+import { useLazyGetProfileQuery } from '../../store/user/user.api';
+import { useEffect } from 'react';
+import { logout, setProfile } from '../../store/user/user.slice';
 
 function Main() {
+
+	const dispatch = useDispatch<AppDispatch>();
+	const [getProfile, { data }] = useLazyGetProfileQuery();
+	const { jwt, profile } = useSelector((state: RootState) => state.user);
+	const navigate = useNavigate();
+
+	useEffect(() => {
+		getProfile(jwt);
+	}, [jwt, getProfile]);
+
+	useEffect(() => {
+		dispatch(setProfile(data));
+	}, [data, dispatch]);
+
+	const clickHandler = () => {
+		dispatch(logout());
+		navigate('/auth/login');
+	};
+
 	return (
 		<div className={styles['main-layout']}>
 			<aside className={cn(styles['sidebar'], styles['main-layout__sidebar'])}>
@@ -11,8 +35,8 @@ function Main() {
 					<section className={styles['sidebar__user-info']}>
 						<img src='/siba.jpg' className={styles['sidebar__avatar']} alt="Аватар пользователя" />
 						<div className={styles['sidebar__user-info-container']}>
-							<p className={styles['sidebar__user-name']}>Денис Ершов</p>
-							<p className={styles['sidebar__user-email']}>denis.ershov.10@gmail.com</p>
+							<p className={styles['sidebar__user-name']}>{profile?.name}</p>
+							<p className={styles['sidebar__user-email']}>{profile?.email}</p>
 						</div>
 					</section>
 					<nav className={styles['navigation']}>
@@ -37,7 +61,7 @@ function Main() {
 							</li>
 						</ul>
 					</nav>
-					<Button withIcon className={styles['sidebar__button-exit']}>Выйти</Button>
+					<Button onClick={clickHandler} withIcon className={styles['sidebar__button-exit']}>Выйти</Button>
 				</div>
 			</aside>
 			<main className={styles['main-content']}>

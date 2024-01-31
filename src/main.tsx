@@ -9,8 +9,10 @@ import Catalog from './pages/Catalog/Catalog';
 import Product from './pages/Product/Product';
 import Auth from './layout/Auth/Auth';
 import Login from './pages/Login/Login';
-import Registr from './pages/Registr/Registr';
+import Register from './pages/Register/Register';
 import RequireAuth from './helpers/RequireAuth';
+import { Provider } from 'react-redux';
+import { store } from './store/store';
 
 const router = createBrowserRouter([
 	{
@@ -40,8 +42,8 @@ const router = createBrowserRouter([
 				element: <Login />
 			},
 			{
-				path: 'registr',
-				element: <Registr />
+				path: 'register',
+				element: <Register />
 			}
 		]
 	},
@@ -53,6 +55,8 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
 	<React.StrictMode>
-		<RouterProvider router={router} />
+		<Provider store={store}>
+			<RouterProvider router={router} />
+		</Provider>
 	</React.StrictMode>
 );

@@ -1,5 +1,5 @@
-import IProduct from '../../interfaces/IProduct';
+import {IProduct} from '../../models/IProduct';
 
 export interface IProductList {
-  products: IProduct[];
+  products: IProduct[] | undefined;
 }

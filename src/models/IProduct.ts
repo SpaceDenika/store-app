@@ -1,4 +1,4 @@
-interface IProduct {
+export interface IProduct {
   brand: string;
   category: string;
   description: string;
@@ -12,4 +12,9 @@ interface IProduct {
   title: string;
 }
 
-export default IProduct;
+export interface ServerResponse {
+  limit: number;
+  products: IProduct[];
+  skip: number;
+  total: number;
+}

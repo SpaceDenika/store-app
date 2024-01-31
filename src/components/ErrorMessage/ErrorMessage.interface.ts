@@ -1,3 +1,6 @@
+import { SerializedError } from '@reduxjs/toolkit';
+import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
+
 export interface IErrorMessage {
-  message: string;
+  message: FetchBaseQueryError | SerializedError;
 }

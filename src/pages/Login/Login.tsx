@@ -1,62 +1,58 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
-import { ChangeEventHandler, FormEventHandler, useState } from 'react';
+import { ChangeEventHandler, FormEventHandler, useEffect, useState } from 'react';
 import Button from '../../components/Button/Button';
 import Footer from '../../components/Footer/Footer';
 import Heading from '../../components/Heading/Heading';
 import Input from '../../components/Input/Input';
 import Label from '../../components/Label/Label';
 import styles from './Login.module.css';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../store/store';
+import { useLoginMutation } from '../../store/user/user.api';
+import { setToken } from '../../store/user/user.slice';
+import { useNavigate } from 'react-router-dom';
+
+interface IFormState {
+  email: string;
+  password: string;
+}
 
 function Login() {
 
+	const dispatch = useDispatch<AppDispatch>();
+	const jwt = useSelector((state: RootState) => state.user.jwt);
+	const [login, { data }] = useLoginMutation();
 	const navigate = useNavigate();
 
-  interface IFormState {
-    email: string;
-    password: string;
-  }
+	useEffect(() => {
+  	dispatch(setToken(data));
+	}, [data, dispatch]);
 
-  const [formState, setFormState] = useState<IFormState>({
+	useEffect(() => {
+  	if (jwt) {
+  		navigate('/');
+  	}
+	}, [jwt, navigate]);
+
+	const [formState, setFormState] = useState<IFormState>({
   	email: '',
   	password: ''
-  });
+	});
 
-  const changeHandler: ChangeEventHandler<HTMLInputElement> = (e) => {
+	const changeHandler: ChangeEventHandler<HTMLInputElement> = (e) => {
   	setFormState({
   		...formState,
   		[e.target.name]: e.target.value
   	});
-  };
+	};
 
-  const submitHandler: FormEventHandler<HTMLFormElement> = async (e) => {
+	const submitHandler: FormEventHandler<HTMLFormElement> = async (e) => {
   	e.preventDefault();
 
-  	// const jwt = localStorage.getItem('token');
-  	// console.log(jwt);
+  	await login(formState);
+	};
 
-  	// const loginData = {
-  	// 	email: formState.email,
-  	// 	password: formState.password
-  	// };
-
-  	// const response = await fetch('https://purpleschool.ru/pizza-api-demo/auth/login', {
-  	// 	method: 'POST',
-  	// 	headers: {
-  	// 		'Content-Type': 'application/json'
-  	// 	},
-  	// 	body: JSON.stringify(loginData)
-  	// });
-
-  	// const data = await response.json();
-
-  	// if (jwt) {
-  	// 	navigate('/');
-  	// }
-  	// console.log(data);
-  };
-
-  return (
+	return (
   	<section className={styles['login']}>
   		<div className={styles['login__container']}>
   			<header>
@@ -73,10 +69,10 @@ function Login() {
   				</div>
   				<Button large>Вход</Button>
   			</form>
-  			<Footer question='Нет акканута?' linkText='Зарегистрироваться' linkPath='/auth/registr' />
+  			<Footer question='Нет акканута?' linkText='Зарегистрироваться' linkPath='/auth/register' />
   		</div>
   	</section>
-  );
+	);
 }
 
 export default Login;

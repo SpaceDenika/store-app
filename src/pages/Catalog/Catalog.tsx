@@ -1,39 +1,13 @@
 import styles from './Catalog.module.css';
-import { useEffect, useState } from 'react';
 import Heading from '../../components/Heading/Heading';
 import SearchInput from '../../components/SearchInput/SearchInput';
 import ProductList from '../../components/ProductList/ProductList';
-import IProduct from '../../interfaces/IProduct';
 import Loader from '../../components/Loader/Loader';
 import ErrorMessage from '../../components/ErrorMessage/ErrorMessage';
+import { useGetProductsQuery } from '../../store/products/products.api';
 
-function Menu() {
-
-	const [products, setProducts] = useState<IProduct[]>([]);
-	const [isLoading, setIsLoading] = useState<boolean>(false);
-	const [error, setError] = useState<string | undefined>();
-
-	const getData = async () => {
-		try {
-			setError('');
-			setIsLoading(true);
-			const res = await fetch('https://dummyjson.com/products');
-			const data = await res.json();
-			setProducts(data.products);
-			setIsLoading(false);
-		} catch (e) {
-			console.error(e);
-			if (e instanceof Error){
-				setError(e.message);
-			}
-			setIsLoading(false);
-			return;
-		}
-	};
-
-	useEffect(() => {
-		getData();
-	}, []);
+function Catalog() {
+	const { data, isLoading, isError, error} = useGetProductsQuery('');
 
 	return(
 		<section className={styles['catalog']}>
@@ -42,12 +16,12 @@ function Menu() {
 					<Heading>Каталог</Heading>
 					<SearchInput placeholder='Поиск...' />
 				</header>
-				{error && <ErrorMessage message={error} />}
+				{isError && <ErrorMessage message={error} />}
 				{isLoading && <Loader />}
-				{(!isLoading && !error) && <ProductList products={products} />}
+				{(!isLoading && !isError) && <ProductList products={data} />}
 			</div>
 		</section>
 	);
 }
 
-export default Menu;
+export default Catalog;

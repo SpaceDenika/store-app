@@ -1,18 +1,39 @@
-import styles from './Registr.module.css';
+import styles from './Register.module.css';
 import Button from '../../components/Button/Button';
 import Footer from '../../components/Footer/Footer';
 import Heading from '../../components/Heading/Heading';
 import Input from '../../components/Input/Input';
 import Label from '../../components/Label/Label';
-import { ChangeEventHandler, FormEventHandler, useState } from 'react';
+import { ChangeEventHandler, FormEventHandler, useEffect, useState } from 'react';
+import { useRegisterMutation } from '../../store/user/user.api';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../store/store';
+import { setToken } from '../../store/user/user.slice';
+import { useNavigate } from 'react-router-dom';
 
 interface IFormState {
   email: string;
-  password: string;
+  password: string | number;
   name: string;
 }
 
-function Registr() {
+function Register() {
+
+	const [register, { data }] = useRegisterMutation();
+	const dispatch = useDispatch<AppDispatch>();
+	const jwt = useSelector((state: RootState) => state.user.jwt);
+	const navigate = useNavigate();
+
+	useEffect(() => {
+		dispatch(setToken(data));
+	}, [data, dispatch]);
+
+	useEffect(() => {
+		if (jwt) {
+			navigate('/');
+		}
+	}, [jwt, navigate]);
+
 	const [formState, setFormState] = useState<IFormState>({
 		email: '',
 		password: '',
@@ -28,12 +49,9 @@ function Registr() {
 
 	const submitHandler: FormEventHandler<HTMLFormElement> = async (e) => {
 		e.preventDefault();
-		// const registerData = {
-		// 	email: formState.email,
-		// 	password: formState.password,
-		// 	name: formState.name
-		// };
 
+		await register(formState);
+		
 		// const response = await fetch('https://purpleschool.ru/pizza-api-demo/auth/register', {
 		// 	method: 'POST',
 		// 	headers: {
@@ -74,4 +92,4 @@ function Registr() {
 	);
 }
 
-export default Registr;
+export default Register;

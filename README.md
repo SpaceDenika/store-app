@@ -2,4 +2,4 @@
 
 Приложение Store - интернет магазин. 
 
-Написан на TS + React + Vite. Используется Redux Toolkit, RTK Query, упрощенная аутентификация с JWT.
+Написан на TS + React + Vite. Используется Redux Toolkit, RTK Query, упрощенная аутентификация с JWT, роутинг.

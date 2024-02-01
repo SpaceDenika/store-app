@@ -67,15 +67,15 @@ function Register() {
         	<form className={styles['form']} onSubmit={submitHandler}>
         		<div className={styles['form__input-wrapper']}>
         			<Label htmlFor='email'>Ваш email</Label>
-        			<Input id='email' type='email' placeholder='Email' name='email' onChange={changeHandler} value={formState?.email} />
+        			<Input required id='email' type='email' placeholder='Email' name='email' onChange={changeHandler} value={formState?.email} />
         		</div>
         		<div className={styles['form__input-wrapper']}>
         			<Label htmlFor='password'>Ваш пароль</Label>
-        			<Input id="password" type='password' placeholder='Пароль' name='password' onChange={changeHandler} value={formState?.password} />
+        			<Input required id="password" type='password' placeholder='Пароль' name='password' onChange={changeHandler} value={formState?.password} />
         		</div>
         		<div className={styles['form__input-wrapper']}>
         			<Label htmlFor='name'>Ваше имя</Label>
-        			<Input id="name" type='text' placeholder='Имя' name='name' onChange={changeHandler} value={formState?.name} />
+        			<Input required id="name" type='text' placeholder='Имя' name='name' onChange={changeHandler} value={formState?.name} />
         		</div>
         		<Button large>Зарегистрироваться</Button>
         	</form>

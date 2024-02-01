@@ -65,11 +65,11 @@ function Login() {
         	<form className={styles['form']} onSubmit={submitHandler}>
         		<div className={styles['form__input-wrapper']}>
         			<Label htmlFor='email'>Ваш email</Label>
-        			<Input id='email' type='email' placeholder='Email' name='email' onChange={changeHandler} value={formState.email} />
+        			<Input required id='email' type='email' placeholder='Email' name='email' onChange={changeHandler} value={formState.email} />
         		</div>
         		<div className={styles['form__input-wrapper']}>
         			<Label htmlFor='password'>Ваш пароль</Label>
-        			<Input id="password" type='password' placeholder='Пароль' name='password' onChange={changeHandler} value={formState.password} />
+        			<Input required id="password" type='password' placeholder='Пароль' name='password' onChange={changeHandler} value={formState.password} />
         		</div>
         		<Button large>Вход</Button>
         	</form>

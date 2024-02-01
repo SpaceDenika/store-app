@@ -16,8 +16,12 @@ export const productsApi = createApi({
 		getProductById: builder.query<IProduct, string | undefined>({
 			query: (id) => `/products/${id}`,
 			transformErrorResponse: (response) => response.status
+		}),
+		getProductByTitle: builder.query<IProduct[], string>({
+			query: (title) => `/products/search?limit=100&q=${title}`,
+			transformResponse: (response: ServerResponse) => response.products
 		})
 	})
 });
 
-export const { useGetProductsQuery, useGetProductByIdQuery } = productsApi;
+export const { useGetProductsQuery, useGetProductByIdQuery, useLazyGetProductByTitleQuery } = productsApi;

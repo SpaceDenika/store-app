@@ -8,20 +8,30 @@ export const productsApi = createApi({
 		baseUrl: 'https://dummyjson.com'
 	}),
 	endpoints: (builder) => ({
-		getProducts: builder.query<IProduct[], string>({
-			query: () => '/products',
-			transformResponse: (response: ServerResponse) => response.products,
-			transformErrorResponse: (response) => response.status
-		}),
 		getProductById: builder.query<IProduct, string | undefined>({
 			query: (id) => `/products/${id}`,
 			transformErrorResponse: (response) => response.status
 		}),
-		getProductByTitle: builder.query<IProduct[], string>({
-			query: (title) => `/products/search?limit=100&q=${title}`,
-			transformResponse: (response: ServerResponse) => response.products
+		getProductByTitle: builder.query<ServerResponse, {title: string, limit: number, currentPage: number}>({
+			query: ({title, limit, currentPage}) => ({
+				url: '/products/search',
+				params: {
+					limit: limit,
+					skip: (currentPage - 1) * limit,
+					q: title
+				}
+			})
+		}),
+		getLimitedProducts: builder.query<ServerResponse, {limit: number, currentPage: number}>({
+			query: ({limit, currentPage}) => ({
+				url: '/products',
+				params: {
+					limit: limit,
+					skip: (currentPage - 1) * limit
+				}
+			})
 		})
 	})
 });
 
-export const { useGetProductsQuery, useGetProductByIdQuery, useLazyGetProductByTitleQuery } = productsApi;
+export const { useGetProductByIdQuery, useLazyGetProductByTitleQuery, useLazyGetLimitedProductsQuery } = productsApi;

@@ -5,15 +5,22 @@ import Button from '../../components/Button/Button';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../store/store';
 import { useLazyGetProfileQuery } from '../../store/user/user.api';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { logout, setProfile } from '../../store/user/user.slice';
+import { getTotalCount } from '../../store/cart/cart.slice';
 
 function Main() {
 
+	const [isOpenMenu, setIsOpenMenu] = useState<boolean>(false);
 	const dispatch = useDispatch<AppDispatch>();
 	const [getProfile, { data }] = useLazyGetProfileQuery();
 	const { jwt, profile } = useSelector((state: RootState) => state.user);
+	const { cartProducts, totalCount } = useSelector((state: RootState) => state.cart);
 	const navigate = useNavigate();
+
+	useEffect(() => {
+		dispatch(getTotalCount());
+	}, [cartProducts]);
 
 	useEffect(() => {
 		getProfile(jwt);
@@ -28,10 +35,24 @@ function Main() {
 		navigate('/auth/login');
 	};
 
+	const menuClickHandler = () => {
+		setIsOpenMenu(prev => !prev);
+	};
+
+	const closeMenuByOverlayClickHandler = () => {
+		if (isOpenMenu) {
+			setIsOpenMenu(false);
+		}
+	};
+
 	return (
 		<div className={styles['main-layout']}>
-			<aside className={cn(styles['sidebar'], styles['main-layout__sidebar'])}>
-				<div className={styles['sidebar__container']}>
+			<aside className={cn(styles['sidebar'], styles['main-layout__sidebar'], {
+				[styles['main-layout__sidebar_active']]: isOpenMenu
+			})}>
+				<div className={cn(styles['sidebar__container'], {
+					[styles['sidebar__container_active']]: isOpenMenu
+				})}>
 					<section className={styles['sidebar__user-info']}>
 						<img src={import.meta.env.BASE_URL + '/siba.jpg'} className={styles['sidebar__avatar']} alt="Аватар пользователя" />
 						<div className={styles['sidebar__user-info-container']}>
@@ -42,7 +63,7 @@ function Main() {
 					<nav className={styles['navigation']}>
 						<ul className={styles['navigation__list']}>
 							<li>
-								<NavLink 
+								<NavLink onClick={() => setIsOpenMenu(false)}
 									className={({  isActive  }) => cn(styles['navigation__link'], styles['navigation__link_menu'], {
 										[styles['navigation__link_active']]: isActive
 									})} 
@@ -51,12 +72,13 @@ function Main() {
 								</NavLink>
 							</li>
 							<li>
-								<NavLink 
+								<NavLink onClick={() => setIsOpenMenu(false)}
 									className={({  isActive  }) => cn(styles['navigation__link'], styles['navigation__link_cart'], {
 										[styles['navigation__link_active']]: isActive
 									})} 
 									to={'/cart'}>
                     Корзина
+									{totalCount !== 0 && <span className={styles['navigation__cart-count']}>{totalCount}</span>}
 								</NavLink>
 							</li>
 						</ul>
@@ -64,7 +86,10 @@ function Main() {
 					<Button onClick={clickHandler} withIcon className={styles['sidebar__button-exit']}>Выйти</Button>
 				</div>
 			</aside>
-			<main className={styles['main-content']}>
+			<main onClick={closeMenuByOverlayClickHandler} className={styles['main-content']}>
+				<button onClick={menuClickHandler} className={cn(styles['main-content__menu'], {
+					[styles['main-content__menu_active']]: isOpenMenu
+				})}></button>
 				<Outlet />
 			</main>
 		</div>

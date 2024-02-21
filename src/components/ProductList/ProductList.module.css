@@ -10,9 +10,21 @@
 .product-list__item {
   border-radius: 18px;
   box-shadow: 18.214px 18.214px 36.429px 0px rgba(211, 209, 216, 0.25);
-  background-color: #FCFCFD;
+  background-color: #ffffff;
 }
 
 .product-list__item:hover {
   box-shadow: 18.214px 18.214px 36.429px 0px rgba(158, 156, 161, 0.25);
+}
+
+@media screen and (max-width: 900px) {
+  .product-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media screen and (max-width: 700px) {
+  .product-list {
+    grid-template-columns: 1fr;
+  }
 }

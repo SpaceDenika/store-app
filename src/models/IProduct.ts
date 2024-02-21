@@ -12,6 +12,11 @@ export interface IProduct {
   title: string;
 }
 
+export interface ICartProduct extends IProduct {
+  count: number;
+  totalPrice: number;
+}
+
 export interface ServerResponse {
   limit: number;
   products: IProduct[];

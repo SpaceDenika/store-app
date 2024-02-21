@@ -1,10 +1,18 @@
-.catalog__container {
+.catalog {
   display: flex;
   flex-direction: column;
   gap: 30px;
+  height: 100%;
 }
 
 .catalog__header {
   display: flex;
   justify-content: space-between;
+}
+
+@media screen and (max-width: 768px) {
+  .catalog__header {
+    flex-direction: column;
+    gap: 20px;
+  }
 }

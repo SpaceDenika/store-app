@@ -1,20 +1,47 @@
 .main-layout {
   display: grid;
   grid-template-columns: 240px 1fr;
+  height: 100vh;
+  position: relative;
 }
 
 .main-layout__sidebar {
 }
 
+.main-content__menu {
+  background-image: url('/burger-menu.svg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 20px;
+  height: 20px;
+  background-color: inherit;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: none;
+  position: absolute;
+  top: 50px;
+  right: 30px;
+}
+
+.main-content__menu_active {
+  background-image: url('/cross-black.svg');
+}
+
 .sidebar__container {
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
   display: flex;
   flex-direction: column;
   padding: 25px 25px 50px 25px;
-  height: 100svh;
+  height: 100vh;
   box-sizing: border-box;
   border-right: 1px solid var(--secondary-text-color);
+  max-width: 240px;
+  width: 100%;
+  gap: 40px;
 }
 
 .sidebar__avatar {
@@ -28,7 +55,6 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
-  margin-bottom: 45px;
 }
 
 .sidebar__user-info-container {
@@ -71,7 +97,7 @@
   height: 26px;
   top: 7px;
   left: 10px;
-  background-image: url('/public/exit.svg');
+  background-image: url('/exit.svg');
 }
 
 .navigation__list {
@@ -101,7 +127,7 @@
 .navigation__link_menu::before {
   content: '';
   position: absolute;
-  background-image: url('/public/menu.svg');
+  background-image: url('/menu.svg');
   width: 23px;
   height: 23px;
   top: 0;
@@ -111,11 +137,18 @@
 .navigation__link_cart::before {
   content: '';
   position: absolute;
-  background-image: url('/public/cart.svg');
+  background-image: url('/cart.svg');
   width: 23px;
   height: 23px;
   top: 0;
   left: 0;
+}
+
+.navigation__cart-count {
+  border: 1px solid red;
+  padding: 0 5px;
+  margin-left: 10px;
+  border-radius: 10px;
 }
 
 .navigation__link_active {
@@ -124,4 +157,36 @@
 
 .main-content {
   padding: 40px 30px;
+  box-sizing: border-box;
+}
+
+@media screen and (max-width: 767px) {
+  .main-content {
+    padding: 20px 10px;
+  }
+
+  .main-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .main-layout__sidebar {
+    position: absolute;
+  }
+
+  .sidebar__container {
+    left: -240px;
+    background-color: #f0f0f0;
+    transition: left 1s ease;
+    z-index: 1;
+  }
+
+  .main-content__menu {
+    display: block;
+    top: 30px;
+    right: 10px;
+  }
+
+  .sidebar__container_active {
+    left: 0;
+  }
 }

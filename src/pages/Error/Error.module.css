@@ -1,0 +1,18 @@
+.error-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  gap: 30px;
+  padding: 20px;
+}
+
+.error-page__image {
+  width: 280px;
+}
+
+.error-page__text {
+  margin: 0;
+  text-align: center;
+}

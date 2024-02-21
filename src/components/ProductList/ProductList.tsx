@@ -15,6 +15,7 @@ function ProductList({ products }: IProductList) {
 						category={product.category}
 						rating={product.rating}
 						image={product.images[0]}
+						product={product}
 					/>
 				</li>
 			))}

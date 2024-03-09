@@ -32,7 +32,7 @@
 .sidebar__container {
   position: fixed;
   top: 0;
-  left: 0;
+  bottom: 0;
   display: flex;
   flex-direction: column;
   padding: 25px 25px 50px 25px;
@@ -174,9 +174,9 @@
   }
 
   .sidebar__container {
-    left: -240px;
+    transform: translate(-240px);
     background-color: #f0f0f0;
-    transition: left 1s ease;
+    transition: transform 1s ease;
     z-index: 1;
   }
 
@@ -187,6 +187,6 @@
   }
 
   .sidebar__container_active {
-    left: 0;
+    transform: translate(0);
   }
 }

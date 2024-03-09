@@ -11,9 +11,11 @@ function Error() {
 
 	return(
 		<section className={styles['error-page']}>
-			<img className={styles['error-page__image']} src={import.meta.env.BASE_URL + '/logo.svg'} alt="Логотип" />
-			<p className={styles['error-page__text']}>К сожалению, данной страницы не существует</p>
-			<Button onClick={clickHandler} large>Перейти в каталог</Button>
+			<div className={styles['error-page__container']}>
+				<img className={styles['error-page__image']} src={import.meta.env.BASE_URL + '/logo.svg'} alt="Логотип" />
+				<p className={styles['error-page__text']}>К сожалению, данной страницы не существует</p>
+				<Button onClick={clickHandler} large>Перейти в каталог</Button>
+			</div>
 		</section>
 	);
 }

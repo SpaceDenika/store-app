@@ -2,7 +2,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: 30px;
+  height: 100%;
 }
 
 .success__image {
@@ -11,4 +13,16 @@
 
 .success__text {
   margin: 0;
+}
+
+@media screen and (max-width: 1024px) {
+  .success__image {
+    width: 350px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .success__image {
+    width: 200px;
+  }
 }

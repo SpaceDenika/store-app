@@ -7,7 +7,7 @@ import { AppDispatch, RootState } from '../../store/store';
 import { useLazyGetProfileQuery } from '../../store/user/user.api';
 import { useEffect, useState } from 'react';
 import { logout, setProfile } from '../../store/user/user.slice';
-import { getTotalCount } from '../../store/cart/cart.slice';
+import { getTotalCartPrice, getTotalCount } from '../../store/cart/cart.slice';
 
 function Main() {
 
@@ -20,6 +20,7 @@ function Main() {
 
 	useEffect(() => {
 		dispatch(getTotalCount());
+		dispatch(getTotalCartPrice());
 	}, [cartProducts]);
 
 	useEffect(() => {

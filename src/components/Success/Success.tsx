@@ -13,7 +13,7 @@ function Success() {
 		<section className={styles['success']}>
 			<img className={styles['success__image']} src={import.meta.env.BASE_URL + '/logo.svg'} alt="Логотип" />
 			<p className={styles['success__text']}>Ваш заказ успешно оформлен</p>
-			<Button onClick={clickHandler} large>Сделать новый</Button>
+			<Button className={styles['success__button']} onClick={clickHandler} large>Сделать новый</Button>
 		</section>
 	);
 }

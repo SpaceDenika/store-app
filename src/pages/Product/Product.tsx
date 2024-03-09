@@ -44,7 +44,7 @@ function Product() {
 			<header className={styles['product__header']}>
 				<button onClick={exitButtonClickHandler} className={styles['product__button-exit']} />
 				<div className={styles['product__header-info']}>
-					<Heading>{product?.title}</Heading>
+					<Heading className={styles['product__heading']}>{product?.title}</Heading>
 					<p className={styles['product__category']}>{product?.category}</p>
 				</div>
 			</header>

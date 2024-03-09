@@ -8,7 +8,7 @@ interface IState {
 }
 
 const initialState: IState = {
-	cartProducts: [],
+	cartProducts: JSON.parse(localStorage.getItem('cart') as string) ?? [],
 	totalCount: 0,
 	totalCartPrice: 0
 };
@@ -28,14 +28,17 @@ export const cartSlice = createSlice({
 					}
 				});
 			}
+			localStorage.setItem('cart', JSON.stringify(state.cartProducts));
 		},
 		removeProduct: (state, action) => {
 			state.cartProducts = state.cartProducts.filter((item) => item.id !== action.payload.id);
+			localStorage.setItem('cart', JSON.stringify(state.cartProducts));
 		},
 		increase: (state, action) => {
 			const currentProduct = state.cartProducts.find((product) => product.id === action.payload.id);
 			if (currentProduct) {
 				currentProduct.count += 1;
+				localStorage.setItem('cart', JSON.stringify(state.cartProducts));
 			}
 		},
 		decrease: (state, action) => {
@@ -43,6 +46,7 @@ export const cartSlice = createSlice({
 			if (currentProduct) {
 				currentProduct.count -= 1;
 			}
+			localStorage.setItem('cart', JSON.stringify(state.cartProducts));
 		},
 		getTotalCount: (state) => {
 			state.totalCount = state.cartProducts.reduce((acc, product) => {
@@ -53,6 +57,7 @@ export const cartSlice = createSlice({
 			state.cartProducts.map((product) => {
 				product.totalPrice = product.price * product.count;
 			});
+			localStorage.setItem('cart', JSON.stringify(state.cartProducts));
 		},
 		getTotalCartPrice: (state) => {
 			state.totalCartPrice = state.cartProducts.reduce((acc, product) => {
@@ -61,6 +66,7 @@ export const cartSlice = createSlice({
 		},
 		resetCart: (state) => {
 			state.cartProducts = [];
+			localStorage.removeItem('cart');
 		}
 	}
 });

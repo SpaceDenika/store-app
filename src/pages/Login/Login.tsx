@@ -18,12 +18,25 @@ interface IFormState {
   password: string;
 }
 
+interface IError {
+  error: string;
+  message: string;
+  statusCode: number;
+}
+
 function Login() {
 
 	const dispatch = useDispatch<AppDispatch>();
 	const jwt = useSelector((state: RootState) => state.user.jwt);
-	const [login, { data, isLoading }] = useLoginMutation();
+	const [login, { data, isLoading, error, isError }] = useLoginMutation();
 	const navigate = useNavigate();
+	const [errorMessage, setErrorMessage] = useState<string>('');
+
+	useEffect(() => {
+		if (error && 'data' in error) {
+			setErrorMessage((error.data as IError).message);
+		}
+	}, [error]);
 
 	useEffect(() => {
   	dispatch(setToken(data));
@@ -50,7 +63,7 @@ function Login() {
 	const submitHandler: FormEventHandler<HTMLFormElement> = async (e) => {
   	e.preventDefault();
 
-  	await login(formState);
+		await login(formState);
 	};
 
 	return (
@@ -65,12 +78,13 @@ function Login() {
         	<form className={styles['form']} onSubmit={submitHandler}>
         		<div className={styles['form__input-wrapper']}>
         			<Label htmlFor='email'>Ваш email</Label>
-        			<Input required id='email' type='email' placeholder='Email' name='email' onChange={changeHandler} value={formState.email} />
+        			<Input className={isError ? styles['form__input_error'] : ''} required id='email' type='email' placeholder='Email' name='email' onChange={changeHandler} value={formState.email} />
         		</div>
         		<div className={styles['form__input-wrapper']}>
         			<Label htmlFor='password'>Ваш пароль</Label>
-        			<Input required id="password" type='password' placeholder='Пароль' name='password' onChange={changeHandler} value={formState.password} />
+        			<Input className={isError ? styles['form__input_error'] : ''} required id="password" type='password' placeholder='Пароль' name='password' onChange={changeHandler} value={formState.password} />
         		</div>
+        		{isError && <p className={styles['form__error']}>{errorMessage}</p>}
         		<Button large>Вход</Button>
         	</form>
         	<Footer question='Нет акканута?' linkText='Зарегистрироваться' linkPath='/auth/register' />

@@ -1,4 +1,4 @@
-import { ICartProduct } from '../../models/IProduct';
+import { ICartProduct } from '@/models/IProduct';
 
 interface ICartList {
   cartProducts: ICartProduct[];

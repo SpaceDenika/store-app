@@ -5,9 +5,6 @@
   position: relative;
 }
 
-.main-layout__sidebar {
-}
-
 .main-content__menu {
   background-image: url('/burger-menu.svg');
   background-position: center;

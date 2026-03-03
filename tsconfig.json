@@ -5,13 +5,13 @@
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "skipLibCheck": true,
-    "ignoreDeprecations": "6.0",
     "paths": {
       "@/*": ["./src/*"],
       "@components/*": ["./src/components/*"],
+      "@layouts/*": ["./src/layouts/*"],
+      "@router/*": ["./src/router/*"],
       "@helpers/*": ["./src/helpers/*"],
       "@hooks/*": ["./src/hooks/*"],
-      "@layout/*": ["./src/layout/*"],
       "@models/*": ["./src/models/*"],
       "@pages/*": ["./src/pages/*"],
       "@store/*": ["./src/store/*"]

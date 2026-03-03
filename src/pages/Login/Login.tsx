@@ -1,22 +1,18 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
-import {
-  ChangeEventHandler,
-  FormEventHandler,
-  useEffect,
-  useState,
-} from "react";
-import styles from "./Login.module.css";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { AppDispatch, RootState } from "@/store/store";
-import { useLoginMutation } from "@/store/user/user.api";
-import { setToken } from "@/store/user/user.slice";
-import Loader from "@/components/Loader/Loader";
-import Heading from "@/components/Heading/Heading";
-import Label from "@/components/Label/Label";
-import Input from "@/components/Input/Input";
-import Button from "@/components/Button/Button";
-import Footer from "@/components/Footer/Footer";
+import { ChangeEventHandler, FormEventHandler, useActionState, useEffect, useState } from 'react';
+import styles from './Login.module.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { AppDispatch, RootState } from '@/store/store';
+import { useLoginMutation } from '@/store/user/user.api';
+import { setToken } from '@/store/user/user.slice';
+import Loader from '@/components/Loader/Loader';
+import Heading from '@/components/Heading/Heading';
+import Label from '@/components/Label/Label';
+import Input from '@/components/Input/Input';
+import Button from '@/components/Button/Button';
+import Footer from '@/components/Footer/Footer';
+import { ROUTE_PATHS } from '@/router/routes';
 
 interface IFormState {
   email: string;
@@ -34,10 +30,10 @@ function Login() {
   const jwt = useSelector((state: RootState) => state.user.jwt);
   const [login, { data, isLoading, error, isError }] = useLoginMutation();
   const navigate = useNavigate();
-  const [errorMessage, setErrorMessage] = useState<string>("");
+  const [errorMessage, setErrorMessage] = useState<string>('');
 
   useEffect(() => {
-    if (error && "data" in error) {
+    if (error && 'data' in error) {
       setErrorMessage((error.data as IError).message);
     }
   }, [error]);
@@ -48,13 +44,25 @@ function Login() {
 
   useEffect(() => {
     if (jwt) {
-      navigate("/");
+      navigate('/');
     }
   }, [jwt, navigate]);
 
+  const doLogin = async (prevState: any, formData: FormData) => {
+    try {
+      const res = await login(Object.fromEntries(formData)).unwrap();
+      dispatch(setToken(res));
+      return { error: null };
+    } catch (error: any) {
+      return { error: error.data.message || 'Error' };
+    }
+  };
+
+  const [state, loginAction, isPending] = useActionState(doLogin, { error: null });
+
   const [formState, setFormState] = useState<IFormState>({
-    email: "",
-    password: "",
+    email: '',
+    password: '',
   });
 
   const changeHandler: ChangeEventHandler<HTMLInputElement> = (e) => {
@@ -71,19 +79,19 @@ function Login() {
   };
 
   return (
-    <section className={styles["login"]}>
-      <div className={styles["login__container"]}>
+    <section className={styles['login']}>
+      <div className={styles['login__container']}>
         {isLoading && <Loader />}
         {!isLoading && (
           <>
             <header>
               <Heading>Вход</Heading>
             </header>
-            <form className={styles["form"]} onSubmit={submitHandler}>
-              <div className={styles["form__input-wrapper"]}>
+            <form className={styles['form']} action={loginAction}>
+              <div className={styles['form__input-wrapper']}>
                 <Label htmlFor="email">Ваш email</Label>
                 <Input
-                  className={isError ? styles["form__input_error"] : ""}
+                  className={isError ? styles['form__input_error'] : ''}
                   required
                   id="email"
                   type="email"
@@ -93,10 +101,10 @@ function Login() {
                   value={formState.email}
                 />
               </div>
-              <div className={styles["form__input-wrapper"]}>
+              <div className={styles['form__input-wrapper']}>
                 <Label htmlFor="password">Ваш пароль</Label>
                 <Input
-                  className={isError ? styles["form__input_error"] : ""}
+                  className={isError ? styles['form__input_error'] : ''}
                   required
                   id="password"
                   type="password"
@@ -106,16 +114,10 @@ function Login() {
                   value={formState.password}
                 />
               </div>
-              {isError && (
-                <p className={styles["form__error"]}>{errorMessage}</p>
-              )}
+              {isError && <p className={styles['form__error']}>{errorMessage}</p>}
               <Button large>Вход</Button>
             </form>
-            <Footer
-              question="Нет акканута?"
-              linkText="Зарегистрироваться"
-              linkPath="/auth/register"
-            />
+            <Footer question="Нет акканута?" linkText="Зарегистрироваться" linkPath={ROUTE_PATHS.AUTH.REGISTER} />
           </>
         )}
       </div>

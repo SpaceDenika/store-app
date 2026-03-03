@@ -1,22 +1,18 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
-import { useRegisterMutation } from "@/store/user/user.api";
-import styles from "./Register.module.css";
-import {
-  ChangeEventHandler,
-  FormEventHandler,
-  useEffect,
-  useState,
-} from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { AppDispatch, RootState } from "@/store/store";
-import { setToken } from "@/store/user/user.slice";
-import Loader from "@/components/Loader/Loader";
-import Heading from "@/components/Heading/Heading";
-import Label from "@/components/Label/Label";
-import Input from "@/components/Input/Input";
-import Button from "@/components/Button/Button";
-import Footer from "@/components/Footer/Footer";
+import { useRegisterMutation } from '@/store/user/user.api';
+import styles from './Register.module.css';
+import { ChangeEventHandler, FormEventHandler, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { AppDispatch, RootState } from '@/store/store';
+import { setToken } from '@/store/user/user.slice';
+import Loader from '@/components/Loader/Loader';
+import Heading from '@/components/Heading/Heading';
+import Label from '@/components/Label/Label';
+import Input from '@/components/Input/Input';
+import Button from '@/components/Button/Button';
+import Footer from '@/components/Footer/Footer';
+import { ROUTE_PATHS } from '@/router/routes';
 
 interface IFormState {
   email: string;
@@ -32,13 +28,13 @@ interface IError {
 
 function Register() {
   const [register, { data, isLoading, error, isError }] = useRegisterMutation();
-  const [errorMessage, setErrorMessage] = useState<string>("");
+  const [errorMessage, setErrorMessage] = useState<string>('');
   const dispatch = useDispatch<AppDispatch>();
   const jwt = useSelector((state: RootState) => state.user.jwt);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (error && "data" in error) {
+    if (error && 'data' in error) {
       setErrorMessage((error.data as IError).message);
     }
   }, [error]);
@@ -49,14 +45,14 @@ function Register() {
 
   useEffect(() => {
     if (jwt) {
-      navigate("/");
+      navigate('/');
     }
   }, [jwt, navigate]);
 
   const [formState, setFormState] = useState<IFormState>({
-    email: "",
-    password: "",
-    name: "",
+    email: '',
+    password: '',
+    name: '',
   });
 
   const changeHandler: ChangeEventHandler<HTMLInputElement> = (e) => {
@@ -73,19 +69,19 @@ function Register() {
   };
 
   return (
-    <section className={styles["login"]}>
-      <div className={styles["login__container"]}>
+    <section className={styles['login']}>
+      <div className={styles['login__container']}>
         {isLoading && <Loader />}
         {!isLoading && (
           <>
             <header>
               <Heading>Регистрация</Heading>
             </header>
-            <form className={styles["form"]} onSubmit={submitHandler}>
-              <div className={styles["form__input-wrapper"]}>
+            <form className={styles['form']} onSubmit={submitHandler}>
+              <div className={styles['form__input-wrapper']}>
                 <Label htmlFor="email">Ваш email</Label>
                 <Input
-                  className={isError ? styles["form__input_error"] : ""}
+                  className={isError ? styles['form__input_error'] : ''}
                   required
                   id="email"
                   type="email"
@@ -95,10 +91,10 @@ function Register() {
                   value={formState?.email}
                 />
               </div>
-              <div className={styles["form__input-wrapper"]}>
+              <div className={styles['form__input-wrapper']}>
                 <Label htmlFor="password">Ваш пароль</Label>
                 <Input
-                  className={isError ? styles["form__input_error"] : ""}
+                  className={isError ? styles['form__input_error'] : ''}
                   required
                   id="password"
                   type="password"
@@ -108,10 +104,10 @@ function Register() {
                   value={formState?.password}
                 />
               </div>
-              <div className={styles["form__input-wrapper"]}>
+              <div className={styles['form__input-wrapper']}>
                 <Label htmlFor="name">Ваше имя</Label>
                 <Input
-                  className={isError ? styles["form__input_error"] : ""}
+                  className={isError ? styles['form__input_error'] : ''}
                   required
                   id="name"
                   type="text"
@@ -121,16 +117,10 @@ function Register() {
                   value={formState?.name}
                 />
               </div>
-              {isError && (
-                <p className={styles["form__error"]}>{errorMessage}</p>
-              )}
+              {isError && <p className={styles['form__error']}>{errorMessage}</p>}
               <Button large>Зарегистрироваться</Button>
             </form>
-            <Footer
-              question="Есть акканут?"
-              linkText="Войти"
-              linkPath="/auth/login"
-            />
+            <Footer question="Есть акканут?" linkText="Войти" linkPath={ROUTE_PATHS.AUTH.LOGIN} />
           </>
         )}
       </div>

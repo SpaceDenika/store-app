@@ -1,15 +1,21 @@
 import cn from 'classnames';
 import styles from './Button.module.css';
-import { IButton } from './Button.interface';
+import { IButtonProps } from './Button.interface';
 
-function Button({ children, large, withIcon, ...props }: IButton) {
-
-	return (
-		<button {...props} className={cn(props.className, styles['button'], {
-			[styles['button_large']]: large,
-			[styles['button_with-icon']]: withIcon}
-		)}>{children}</button>
-	);
+function Button({ children, large, withIcon, isLoading, ...props }: IButtonProps) {
+  return (
+    <button
+      disabled={isLoading}
+      {...props}
+      className={cn(props.className, styles['button'], {
+        [styles['button_large']]: large,
+        [styles['button_with-icon']]: withIcon,
+      })}
+    >
+      {children}
+      {isLoading && <span className={styles['button_loader']} aria-hidden="true"></span>}
+    </button>
+  );
 }
 
 export default Button;

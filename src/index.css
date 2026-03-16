@@ -4,6 +4,7 @@
   --primary-hover-color: #d9603e;
   --text-color: #000000;
   --secondary-text-color: #9EA1B1;
+  --error-color: #ff0000;
 }
 
 .root {

@@ -1,11 +1,13 @@
+import cn from 'classnames';
+import { IErrorMessageProps } from './ErrorMessage.interface';
 import styles from './ErrorMessage.module.css';
 
-function ErrorMessage() {
-	return (
-		<div className={styles['error-message']}>
-			<p className={styles['error-message__message']}>Возникла ошибка</p>
-		</div>
-	);
+function ErrorMessage({ children, className, ...props }: IErrorMessageProps) {
+  return (
+    <p className={cn(styles['error-message'], className)} {...props}>
+      {children}
+    </p>
+  );
 }
 
 export default ErrorMessage;

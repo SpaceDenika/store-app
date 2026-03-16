@@ -1,11 +1,13 @@
 import cn from 'classnames';
 import styles from './Heading.module.css';
-import { IHeading } from './Heading.interface';
+import { IHeadingProps } from './Heading.interface';
 
-function Heading({ children, ...props }: IHeading) {
-	return (
-		<h1 {...props} className={cn(props.className, styles['heading'])}>{children}</h1>
-	);
+function Heading({ children, className, ...props }: IHeadingProps) {
+  return (
+    <h1 {...props} className={cn(styles['heading'], className)}>
+      {children}
+    </h1>
+  );
 }
 
 export default Heading;

@@ -50,7 +50,7 @@ export const router = createBrowserRouter(
             {
               path: ROUTE_PATHS.AUTH.LOGIN,
               lazy: async () => {
-                const module = await import('@/pages/Login/Login');
+                const module = await import('@/pages/LoginPage/LoginPage');
                 return { Component: module.default };
               },
             },

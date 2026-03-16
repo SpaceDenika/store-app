@@ -19,8 +19,8 @@
   gap: 5px;
 }
 
-.form__input_error {
-  border-color: #ff0000;
+.form__text_error {
+  color: #ff0000;
 }
 
 .form__error {

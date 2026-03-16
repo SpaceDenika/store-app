@@ -1,11 +1,21 @@
-import { InputHTMLAttributes } from 'react';
 import styles from './Input.module.css';
 import cn from 'classnames';
+import { IInputProps } from './Input.interface';
 
-function Input(props: InputHTMLAttributes<HTMLInputElement>) {
-	return (
-		<input {...props} className={cn(styles['input'], props.className)} />
-	);
+function Input({ hasError, className, ref, ...props }: IInputProps) {
+  return (
+    <input
+      ref={ref}
+      {...props}
+      className={cn(
+        styles['input'],
+        {
+          [styles['input__error']]: hasError,
+        },
+        className,
+      )}
+    />
+  );
 }
 
 export default Input;

@@ -57,7 +57,7 @@ export const router = createBrowserRouter(
             {
               path: ROUTE_PATHS.AUTH.REGISTER,
               lazy: async () => {
-                const module = await import('@/pages/Register/Register');
+                const module = await import('@/pages/RegisterPage/RegisterPage');
                 return { Component: module.default };
               },
             },

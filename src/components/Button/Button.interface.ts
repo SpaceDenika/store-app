@@ -4,5 +4,5 @@ export interface IButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children?: ReactNode;
   large?: boolean;
   withIcon?: boolean;
-  isLoading: boolean;
+  isLoading?: boolean;
 }

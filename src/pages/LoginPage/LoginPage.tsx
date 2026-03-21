@@ -1,5 +1,4 @@
 import { useActionState, useEffect, useRef } from 'react';
-import * as z from 'zod';
 import styles from './LoginPage.module.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -11,15 +10,11 @@ import Label from '@/components/Label/Label';
 import Input from '@/components/Input/Input';
 import Button from '@/components/Button/Button';
 import Footer from '@/components/Footer/Footer';
-import { isErrorWithMessage, isFetchBaseQueryError } from '@/helpers/errorsTypeGuards';
 import ErrorMessage from '@/components/ErrorMessage/ErrorMessage';
-import { IActionState } from './LoginPage.interface';
+import { ILoginFormState, loginSchema } from './LoginPage.interface';
 import { ROUTE_PATHS } from '@/router/routes';
-
-const loginSchema = z.object({
-  email: z.email('Неверный адрес электронной почты'),
-  password: z.string().min(5, 'Слишком короткий размер: пароль должен содержать не менее 5 символов.'),
-});
+import { handleErrorAction } from '@/helpers/handleErrorAction';
+import { validateSchema } from '@/helpers/validateSchema';
 
 function LoginPage() {
   const dispatch = useDispatch<AppDispatch>();
@@ -36,40 +31,20 @@ function LoginPage() {
     }
   }, [jwt, navigate]);
 
-  const initialState: IActionState = { error: null, success: false };
+  const initialState: ILoginFormState = { error: null, success: false };
 
-  const submitForm = async (_prevState: IActionState, formData: FormData): Promise<IActionState> => {
-    const formFields = Object.fromEntries(formData);
-    const parsedformFields = loginSchema.safeParse(formFields);
+  const submitForm = async (_prevState: ILoginFormState, formData: FormData): Promise<ILoginFormState> => {
+    const validatedFormData = validateSchema(loginSchema, formData);
 
-    if (!parsedformFields.success) {
-      const tree = z.treeifyError(parsedformFields.error);
-      return {
-        error: '',
-        fieldErrors: {
-          email: tree.properties?.email?.errors?.[0],
-          password: tree.properties?.password?.errors?.[0],
-        },
-        fields: formFields,
-        success: false,
-      };
+    if (!validatedFormData.success) {
+      return validatedFormData.errorResponse;
     } else {
       try {
-        const result = await login(parsedformFields.data).unwrap();
+        const result = await login(validatedFormData.data).unwrap();
         dispatch(setToken(result));
-        return { error: null, fields: formFields, success: true };
+        return validatedFormData.successResponse;
       } catch (err: unknown) {
-        if (isFetchBaseQueryError(err)) {
-          if (isErrorWithMessage(err)) {
-            return { error: err.message, fields: formFields, success: false };
-          }
-          return { error: `Ошибка сервера ${err.status}`, fields: formFields, success: false };
-        }
-
-        if (err instanceof Error) {
-          return { error: err.message, fields: formFields, success: false };
-        }
-        return { error: 'Неизвестная ошибка', fields: formFields, success: false };
+        return handleErrorAction(err, validatedFormData.successResponse.fields);
       }
     }
   };
@@ -77,14 +52,14 @@ function LoginPage() {
   const [loginFormState, loginFormAction, isPending] = useActionState(submitForm, initialState);
 
   useEffect(() => {
-    if (!isPending && loginFormState.fieldErrors) {
-      if (loginFormState.fieldErrors.email) {
+    if (!isPending && loginFormState.errorFields) {
+      if (loginFormState.errorFields.email) {
         emailRef.current?.focus();
-      } else if (loginFormState.fieldErrors.password) {
+      } else if (loginFormState.errorFields.password) {
         passwordRef.current?.focus();
       }
     }
-  }, [loginFormState.fieldErrors?.email, loginFormState.fieldErrors?.password, isPending]);
+  }, [loginFormState.errorFields?.email, loginFormState.errorFields?.password, isPending]);
 
   return (
     <section className={styles['login']}>
@@ -103,11 +78,11 @@ function LoginPage() {
                 type="email"
                 placeholder="Email"
                 name="email"
-                defaultValue={loginFormState.fields?.email as string}
-                hasError={!!loginFormState.fieldErrors?.email}
+                defaultValue={typeof loginFormState.fields?.email === 'string' ? loginFormState.fields?.email : ''}
+                hasError={!!loginFormState.errorFields?.email}
                 disabled={isPending}
               />
-              {loginFormState.fieldErrors?.email && <ErrorMessage>{loginFormState.fieldErrors?.email}</ErrorMessage>}
+              {loginFormState.errorFields?.email && <ErrorMessage>{loginFormState.errorFields?.email}</ErrorMessage>}
             </div>
             <div className={styles['form__input-wrapper']}>
               <Label htmlFor="password">Ваш пароль</Label>
@@ -118,12 +93,14 @@ function LoginPage() {
                 type="password"
                 placeholder="Пароль"
                 name="password"
-                defaultValue={loginFormState.fields?.password as string}
-                hasError={!!loginFormState.fieldErrors?.password}
+                defaultValue={
+                  typeof loginFormState.fields?.password === 'string' ? loginFormState.fields?.password : ''
+                }
+                hasError={!!loginFormState.errorFields?.password}
                 disabled={isPending}
               />
-              {loginFormState.fieldErrors?.password && (
-                <ErrorMessage>{loginFormState.fieldErrors.password}</ErrorMessage>
+              {loginFormState.errorFields?.password && (
+                <ErrorMessage>{loginFormState.errorFields.password}</ErrorMessage>
               )}
             </div>
             {loginFormState.error && <ErrorMessage>{loginFormState.error}</ErrorMessage>}

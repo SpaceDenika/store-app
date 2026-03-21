@@ -5,6 +5,7 @@ import { IInputProps } from './Input.interface';
 function Input({ hasError, className, ref, ...props }: IInputProps) {
   return (
     <input
+      autoComplete="on"
       ref={ref}
       {...props}
       className={cn(
